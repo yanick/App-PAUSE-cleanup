@@ -1,0 +1,6 @@
+MANIFEST
+META.yml
+Makefile.PL
+README
+bin/pause-cleanup
+lib/App/PAUSE/cleanup.pm

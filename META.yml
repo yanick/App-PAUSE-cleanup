@@ -1,0 +1,22 @@
+---
+abstract: 'Manage (delete/undelete) your PAUSE files'
+author:
+  - 'Robert Krimen <robertkrimen@gmail.com>'
+build_requires:
+  Test::Most: 0
+configure_requires:
+  ExtUtils::MakeMaker: 6.31
+generated_by: 'Dist::Zilla version 2.101170'
+license: perl
+meta-spec:
+  url: http://module-build.sourceforge.net/META-spec-v1.4.html
+  version: 1.4
+name: App-PAUSE-cleanup
+recommends: {}
+requires:
+  Config::Identity: 0.0015
+  Getopt::Long: 0
+  Getopt::Usaginator: 0
+  Term::EditorEdit: 0
+  WWW::Mechanize: 0
+version: 0.0010
