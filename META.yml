@@ -19,4 +19,4 @@ requires:
   Getopt::Usaginator: 0
   Term::EditorEdit: 0
   WWW::Mechanize: 0
-version: 0.0010
+version: 0.0011

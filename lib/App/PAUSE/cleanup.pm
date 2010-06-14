@@ -1,6 +1,6 @@
 package App::PAUSE::cleanup;
 BEGIN {
-  $App::PAUSE::cleanup::VERSION = '0.0010';
+  $App::PAUSE::cleanup::VERSION = '0.0011';
 }
 # ABSTRACT: Manage (delete/undelete) your PAUSE files
 
@@ -54,6 +54,9 @@ sub run {
     $username = $identity{user} unless defined $username;
     $password = $identity{password} unless defined $password;
 
+    usage '! Missing username and/or password' unless
+        defined $username && defined $password;
+
     $agent->credentials( "pause.perl.org:443", "PAUSE", $username, $password );
 
     print "> Logging in as $username\n";
@@ -90,6 +93,8 @@ sub run {
 
     my @document;
     push @document, <<_END_;
+# Logged in as $username
+#
 # Any line not beginning with 'delete', 'undelete', or 'keep' is ignored
 # To take action on a release, remove the leading '#'
 #   
@@ -112,10 +117,13 @@ _END_
 
         push @document, "$name:";
 
-        my $latest = shift @filelist;
-        if ( $latest->{scheduled} )
-                { push @document, "# undelete $latest->{package_version}" }
-        else    { push @document, "# keep $latest->{package_version}" }
+        my @latest = $self->extract_latest( \@filelist );
+
+        for my $latest ( @latest ) {
+            if ( $latest->{scheduled} )
+                    { push @document, "# undelete $latest->{package_version}" }
+            else    { push @document, "# keep $latest->{package_version}" }
+        }
 
         push @document,
             ( map {
@@ -176,12 +184,54 @@ sub _undelete {
     $self->_submit( 'SUBMIT_pause99_delete_files_undelete', @_ );
 }
 
+sub extract_latest {
+    my $self = shift;
+    my $filelist = shift;
+
+    my @latest;
+    my @filelist;
+    my $found;
+
+    for my $file ( @$filelist ) {
+        if ( $file->{version} =~ m/_/ ) {
+            if ( ! @latest )    { push @latest, $file }
+            else                { push @filelist, $file }
+        }
+        elsif ( ! $found ) {
+            $found = 1;
+            push @latest, $file;
+        }
+        else {
+            push @filelist, $file;
+        }
+    }
+
+    @$filelist = @filelist;
+    return @latest;
+}
+
+sub expand_filelist {
+    my $self = shift;
+    my $filelist = shift; # Actually, package_version
+
+    my @filelist;
+    for my $package_version (@$filelist) {
+        my $pv = $package_version;
+        my ( $version ) = $pv =~ m/-([\d\._]+)$/;
+        if ( $version =~ m/_/ )
+                { push @filelist, "$pv.tar.gz" }
+        else    { push @filelist, map { ( "$_.meta", "$_.readme", "$_.tar.gz" ) } $pv }
+    }
+
+    return @filelist;
+}
+
 sub _submit {
     my $self = shift;
     my $button = shift;
     my $filelist = shift; # Actually, package_version
-
-    my @filelist = map { ( "$_.meta", "$_.readme", "$_.tar.gz" ) } @$filelist;
+    
+    my @filelist = $self->expand_filelist( $filelist );
     $agent->get( 'https://pause.perl.org/pause/authenquery?ACTION=delete_files' );
     $agent->tick( 'pause99_delete_files_FILE' => $_ ) for @filelist;
     $agent->click( $button );
@@ -198,7 +248,7 @@ App::PAUSE::cleanup - Manage (delete/undelete) your PAUSE files
 
 =head1 VERSION
 
-version 0.0010
+version 0.0011
 
 =head1 SYNOPSIS
 
@@ -208,7 +258,7 @@ version 0.0010
 
 =head1 DESCRIPTION
 
-C<pause-cleanup> is a tool for managing the files in your PAUSE account. Run from the commandline, it will launch $EDITOR (or $VISUAL) with an editable document containing the state of your account. By editing the document you can delete or undelete files
+C<pause-cleanup> is a tool for managing the files in your PAUSE account. Run from the commandline, it will launch C<$EDITOR> (or C<$VISUAL>) with an editable document containing the state of your account. By editing the document you can delete or undelete files
 
 =head1 USAGE
 

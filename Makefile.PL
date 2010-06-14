@@ -10,7 +10,7 @@ use ExtUtils::MakeMaker 6.31;
 
 my %WriteMakefileArgs = (
                        'test' => {
-                                   'TESTS' => ''
+                                   'TESTS' => 't/*.t'
                                  },
                        'NAME' => 'App::PAUSE::cleanup',
                        'DISTNAME' => 'App-PAUSE-cleanup',
@@ -25,7 +25,7 @@ my %WriteMakefileArgs = (
                        'EXE_FILES' => [
                                         'bin/pause-cleanup'
                                       ],
-                       'VERSION' => '0.0010',
+                       'VERSION' => '0.0011',
                        'PREREQ_PM' => {
                                         'Getopt::Long' => '0',
                                         'WWW::Mechanize' => '0',
