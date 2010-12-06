@@ -1,6 +1,6 @@
 package App::PAUSE::cleanup;
 BEGIN {
-  $App::PAUSE::cleanup::VERSION = '0.0011';
+  $App::PAUSE::cleanup::VERSION = '0.0012';
 }
 # ABSTRACT: Manage (delete/undelete) your PAUSE files
 
@@ -248,7 +248,7 @@ App::PAUSE::cleanup - Manage (delete/undelete) your PAUSE files
 
 =head1 VERSION
 
-version 0.0011
+version 0.0012
 
 =head1 SYNOPSIS
 
@@ -278,7 +278,7 @@ C<pause-cleanup> is a tool for managing the files in your PAUSE account. Run fro
 
 =head1 AUTHOR
 
-  Robert Krimen <robertkrimen@gmail.com>
+Robert Krimen <robertkrimen@gmail.com>
 
 =head1 COPYRIGHT AND LICENSE
 
