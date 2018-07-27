@@ -30,6 +30,8 @@ use Getopt::Long qw/ GetOptions /;
 use Term::EditorEdit;
 use Config::Identity::PAUSE;
 use WWW::Mechanize;
+use Web::Query 'wq';
+
 
 my $agent = WWW::Mechanize->new;
 
@@ -62,23 +64,8 @@ sub run {
     print "> Logging in as $username\n";
     
     my $response = $agent->get( 'https://pause.perl.org/pause/authenquery?ACTION=delete_files' );
-    my @filelist =
-                map {
-                        # Package-Pkg-0.0016.tar.gz
-                        m{/>\s*([\S]+)\s+(\d+)\s+(.*)\s*</};
-                        my $tar_gz = $1;
-                        my $size = $2;
-                        my $scheduled = $3;
-                        ( my $package = $tar_gz ) =~ s/-([\d\._]+)\.tar\.gz$//;
-                        my $version = $1;
-                        my $package_version = "$package-$version";
-                        $scheduled = $scheduled =~ m/Scheduled for deletion/ ? 1 : 0;
-                        { package => $package, package_version => $package_version,
-                            version => $version, tar_gz => $tar_gz, size => $size,
-                            scheduled => $scheduled };
-                }
-                grep { m/pause99_delete_files_FILE/ && m/\.tar\.gz/ }
-                split m/\n/, $response->decoded_content;
+
+    my @filelist = $self->parse_filelist( $response->decoded_content );
 
     if ( $dump ) {
         print join "\n", map { $_->{package_version} } @filelist;
@@ -172,6 +159,31 @@ _END_
     unless ( @$delete || @$undelete ) {
         print "> Nothing to do\n";
     }
+}
+
+sub parse_filelist {
+    my( $self, $document ) = @_;
+
+    @{ wq($document)->find('input[name="pause99_delete_files_FILE"]')->map(sub{
+        my $tr = $_->parent->parent;
+        my $file = $tr->find('.file')->text;
+
+        my $package = $file;
+        $package =~ s/-([\d\._]+)\.tar\.gz$//
+            or return ();
+        my $version = $1;
+
+        return {
+            tar_gz          => $file,
+            package         => $package,
+            package_version => join( '-', $package, $version ),
+            version         => $version,
+            size            => $tr->find('.size')->text,
+            scheduled       => !!($tr->find('.modified') =~ /Scheduled for deletion/),
+        };
+    }) };
+
+
 }
 
 sub _delete {

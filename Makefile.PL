@@ -30,7 +30,8 @@ my %WriteMakefileArgs = (
     'Getopt::Long' => '0',
     'Getopt::Usaginator' => '0',
     'Term::EditorEdit' => '0',
-    'WWW::Mechanize' => '0'
+    'WWW::Mechanize' => '0',
+    'Web::Query' => 0,
   },
   'VERSION' => '0.0012',
   'test' => {
