@@ -8,6 +8,8 @@ Revision history for App-PAUSE-cleanup
   [ DOCUMENTATION ]
 
   [ ENHANCEMENTS ]
+  - Change the shebang of the pause-cleanup script so 
+    that it's replaced by the perl that does the install. [GH#1, grinnz]
 
   [ NEW FEATURES ]
 
