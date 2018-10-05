@@ -1,6 +1,7 @@
 package App::PAUSE::cleanup;
+our $AUTHORITY = 'cpan:YANICK';
 # ABSTRACT: Manage (delete/undelete) your PAUSE files
-
+$App::PAUSE::cleanup::VERSION = '0.0014';
 use strict;
 use warnings;
 
@@ -250,6 +251,18 @@ sub _submit {
 
 __END__
 
+=pod
+
+=encoding UTF-8
+
+=head1 NAME
+
+App::PAUSE::cleanup - Manage (delete/undelete) your PAUSE files
+
+=head1 VERSION
+
+version 0.0014
+
 =head1 SYNOPSIS
 
     $ pause-cleanup
@@ -276,3 +289,25 @@ C<pause-cleanup> is a tool for managing the files in your PAUSE account. Run fro
         
         -h, -?, --help          This help
 
+=head1 AUTHORS
+
+=over 4
+
+=item *
+
+Robert Krimen <robertkrimen@gmail.com>
+
+=item *
+
+Yanick Champoux <yanick@cpan.org>
+
+=back
+
+=head1 COPYRIGHT AND LICENSE
+
+This software is copyright (c) 2018 by Robert Krimen.
+
+This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.
+
+=cut
