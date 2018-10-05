@@ -8,12 +8,18 @@ Revision history for App-PAUSE-cleanup
   [ DOCUMENTATION ]
 
   [ ENHANCEMENTS ]
-  - Change the shebang of the pause-cleanup script so 
-    that it's replaced by the perl that does the install. [GH#1, grinnz]
 
   [ NEW FEATURES ]
 
   [ STATISTICS ]
+
+0.0014 2018-10-05
+  [ ENHANCEMENTS ]
+    - Change the shebang of the pause-cleanup script so  that it's replaced
+      by the perl that does the install. [GH#1, grinnz]
+
+  [ STATISTICS ]
+    - code churn: 5 files changed, 28 insertions(+), 10 deletions(-)
 
 0.0013 2018-10-05
   - Update to work with new pause format. [GH#2]
