@@ -1,7 +1,4 @@
 package App::PAUSE::cleanup;
-BEGIN {
-  $App::PAUSE::cleanup::VERSION = '0.0012';
-}
 # ABSTRACT: Manage (delete/undelete) your PAUSE files
 
 use strict;
@@ -252,15 +249,6 @@ sub _submit {
 1;
 
 __END__
-=pod
-
-=head1 NAME
-
-App::PAUSE::cleanup - Manage (delete/undelete) your PAUSE files
-
-=head1 VERSION
-
-version 0.0012
 
 =head1 SYNOPSIS
 
@@ -287,17 +275,4 @@ C<pause-cleanup> is a tool for managing the files in your PAUSE account. Run fro
         -d, --dump              Dump the list of files to STDOUT
         
         -h, -?, --help          This help
-
-=head1 AUTHOR
-
-Robert Krimen <robertkrimen@gmail.com>
-
-=head1 COPYRIGHT AND LICENSE
-
-This software is copyright (c) 2010 by Robert Krimen.
-
-This is free software; you can redistribute it and/or modify it under
-the same terms as the Perl 5 programming language system itself.
-
-=cut
 
