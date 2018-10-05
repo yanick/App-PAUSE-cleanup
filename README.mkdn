@@ -4,7 +4,7 @@ App::PAUSE::cleanup - Manage (delete/undelete) your PAUSE files
 
 # VERSION
 
-version 0.0013
+version 0.0014
 
 # SYNOPSIS
 
